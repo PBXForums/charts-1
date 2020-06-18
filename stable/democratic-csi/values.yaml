@@ -1,0 +1,139 @@
+csiDriver:
+  # should be globally unique for a given cluster
+  name: "org.democratic-csi.iscsi"
+
+# add note here about volume expansion requirements
+storageClasses:
+- name: freenas-iscsi-csi
+  defaultClass: false
+  reclaimPolicy: Delete
+  volumeBindingMode: Immediate
+  allowVolumeExpansion: true
+  parameters:
+    # for block-based storage can be ext3, ext4, xfs
+    # for nfs should be nfs
+    fsType: ext4
+
+    # if true, volumes created from other snapshots will be
+    # zfs send/received instead of zfs cloned
+    # detachedVolumesFromSnapshots: "false"
+
+    # if true, volumes created from other volumes will be
+    # zfs send/received instead of zfs cloned
+    # detachedVolumesFromVolumes: "false"
+
+  mountOptions: []
+  secrets:
+    provisioner-secret:
+    controller-publish-secret:
+    node-stage-secret:
+    node-publish-secret:
+    controller-expand-secret:
+
+# if your cluster supports snapshots you may enable below
+volumeSnapshotClasses: []
+#- name: freenas-iscsi-csi
+#  parameters:
+#  # if true, snapshots will be created with zfs send/receive
+#  # detachedSnapshots: "false"
+#  secrets:
+#    snapshotter-secret:
+
+driver:
+  config:
+    driver: freenas-iscsi
+    instance_id:
+    httpConnection:
+      protocol: http
+      host: server address
+      port: 80
+      username: root
+      password: yem1Akin!
+      allowInsecure: true
+    sshConnection:
+      host: server address
+      port: 22
+      username: root
+      # use either password or key
+      password: ""
+      privateKey: |
+        -----BEGIN RSA PRIVATE KEY-----
+        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
+        -----END RSA PRIVATE KEY-----
+    zfs:
+      # total volume name (zvol/<datasetParentName>/<pvc name>) length cannot exceed 63 chars
+      # https://www.ixsystems.com/documentation/freenas/11.2-U5/storage.html#zfs-zvol-config-opts-tab
+      # standard volume naming overhead is 46 chars
+      # datasetParentName should therefore be 17 chars or less
+      datasetParentName: SATA/k8s/b/vols
+      detachedSnapshotsDatasetParentName: SATA/k8s/b/snaps
+      # "" (inherit), lz4, gzip-9, etc
+      zvolCompression:
+      # "" (inherit), on, off, verify
+      zvolDedup:
+      zvolEnableReservation: false
+      # 512, 1K, 2K, 4K, 8K, 16K, 64K, 128K default is 16K
+      zvolBlocksize:
+    iscsi:
+      targetPortal: "192.168.50.10:3260"
+      targetPortals: []
+      # leave empty to omit usage of -I with iscsiadm
+      interface:
+      namePrefix: csi-
+      nameSuffix: "-clustera"
+      # add as many as needed
+      targetGroups:
+        # get the correct ID from the "portal" section in the UI
+        - targetGroupPortalGroup: 1
+          # get the correct ID from the "initiators" section in the UI
+          targetGroupInitiatorGroup: 1
+          # None, CHAP, or CHAP Mutual
+          targetGroupAuthType: None
+          # get the correct ID from the "Authorized Access" section of the UI
+          # only required if using Chap
+          targetGroupAuthGroup:
+
+      extentInsecureTpc: true
+      extentXenCompat: false
+      extentDisablePhysicalBlocksize: true
+      # 512, 1024, 2048, or 4096,
+      extentBlocksize: 512
+      # "" (let FreeNAS decide, currently defaults to SSD), Unknown, SSD, 5400, 7200, 10000, 15000
+      extentRpm: "SSD"
+      # 0-100 (0 == ignore)
+      extentAvailThreshold: 0
